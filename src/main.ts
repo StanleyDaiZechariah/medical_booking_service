@@ -8,6 +8,8 @@ import HospitalBottom from '@/component/hospital_bottom/HospitalBottom.vue'
 // 导入App组件
 import { createApp } from 'vue'
 import Router from '@/router/router'
+import ElementPlus from 'element-plus'
+import 'element-plus/dist/index.css'
 import App from '@/App.vue'
 
 
@@ -22,6 +24,8 @@ app.component('HospitalTop', HospitalTop)
 
 // 安装vue-router
 app.use(Router);
+// 安装element-plus
+app.use(ElementPlus);
 
 // 挂载应用
 app.mount('#app');
