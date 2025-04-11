@@ -10,12 +10,10 @@ import { createApp } from 'vue'
 import Router from '@/router/router'
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
-import zhCn from 'element-plus/es/locale/lang/zh-cn'
+import 'element-plus/es/locale/lang/zh-cn'
 
 // 导入App组件
 import App from '@/App.vue'
-
-
 
 
 // 创建应用
@@ -29,8 +27,6 @@ app.component('HospitalTop', HospitalTop)
 app.use(Router);
 // 安装element-plus
 app.use(ElementPlus);
-// 全局配置element-plus语言包
-app.use(ElementPlus, { locale: zhCn });
 
 // 挂载应用
 app.mount('#app');

@@ -20,7 +20,7 @@
                             v-model:current-page="pageNo"
                             v-model:page-size="pageSize"
                             :page-sizes="[10, 20, 30, 40]"
-                            :small="true"
+                            :size="size"
                             :background="true"
                             layout="prev, pager, next, jumper, total, sizes"
                             :total="100"
@@ -53,6 +53,7 @@ let pageNo = ref<number>(1);
 // 一页展示多少条数据
 let pageSize = ref<number>(10);
 // 选择分页器的尺寸
+let size = ref<string>("small");
 
 </script>
 
