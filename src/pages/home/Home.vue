@@ -13,7 +13,7 @@
                  <Region />
                  <!-- 医院的结构 -->
                 <div class="hospital">
-                    <Card class="item" v-for="item in 10" :key="item" />
+                    <Card class="item" v-for="(item, index) in hospitalData" :key="index" :hospitalInfo = "item" />
                     <!-- 展示分页组件 -->
                     <div>
                         <el-pagination
@@ -22,8 +22,10 @@
                             :page-sizes="[10, 20, 30, 40]"
                             :size="size"
                             :background="true"
-                            layout="prev, pager, next, jumper, total, sizes"
-                            :total="100"
+                            layout="prev, pager, next, jumper, -> , total, sizes"
+                            :total="total"
+                            @current-change = "currentChange"
+                            @size-change = "sizeChange"
                         />
                     </div>
                 </div>
@@ -47,13 +49,51 @@ import Card from "./conponent/Card.vue";
 
 
 // 分页器需要的数据
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 // 分页器页码
 let pageNo = ref<number>(1);
 // 一页展示多少条数据
 let pageSize = ref<number>(10);
 // 选择分页器的尺寸
 let size = ref<string>("small");
+
+// 引入二次封装的数据接口
+import { reqHospital } from "../../api/home/home";
+// 存储医院数据
+let hospitalData = ref([]);
+// 数据总数
+let total = ref<number>(0);
+
+// 组件挂载完毕需要先发送一次请求
+onMounted(() => {
+    // 发送请求获取数据
+    getHosipitalInfo();
+});
+
+// 获取已有的医院的数据
+const getHosipitalInfo = async () => {
+    const result = await reqHospital(pageNo.value, pageSize.value);
+    if (result.data.code === 200) {
+        // 存储数据
+        hospitalData.value = result.data.data.content;
+        // 存储数据总数
+        total.value = result.data.data.totalElements;
+    }
+    console.log(result);
+};
+
+// 页码改变的回调函数
+const currentChange = () => {
+    // 当前页码归为第一页
+    pageNo.value = 1;
+    // 再次发送请求获取数据
+    getHosipitalInfo();
+};
+
+// 分页器下拉菜单发生变化的回调函数
+const sizeChange = () => {
+    getHosipitalInfo();
+};
 
 </script>
 

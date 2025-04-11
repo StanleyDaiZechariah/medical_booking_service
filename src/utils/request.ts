@@ -12,7 +12,7 @@ import { ElMessage } from 'element-plus';
 // axios.create()方法创建axios实例，并设置默认配置
 const request = axios.create({
     baseURL: '/api',
-    timeout: 5000
+    timeout: 30000,
 });
 
 // 请求拦截器
@@ -28,7 +28,7 @@ request.interceptors.response.use((response) => {
     return response
 }, (error) => {
     // 处理http网络错误、业务错误等
-    let status = error.response.status;
+    let status = error.code;
     console.log(status);
     switch (status) {
         case 404:

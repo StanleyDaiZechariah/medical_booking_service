@@ -1,14 +1,5 @@
 <script setup lang="ts">
-import request from "@/utils/request";
-import { onMounted } from 'vue';
 
-// 测试axios请求
-onMounted(() => {
-  request.get('/hosp/hospital/1/10')
-  .then(res => res.data)
-  .then(data => console.log('请求成功：', JSON.stringify(data)))
-  .catch(err => console.log('请求失败：', err));
-});
 
 </script>
 
