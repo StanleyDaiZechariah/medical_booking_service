@@ -8,7 +8,7 @@
 
     <!-- 展示整个路由组件的区域 -->
      <div class="content">
-      xxxxxxxxx
+       <router-view />
      </div>
 
      <!-- 底部的全局组件 -->
