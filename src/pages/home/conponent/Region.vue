@@ -4,7 +4,7 @@
             <div class="left">地区: </div>
             <ul>
                 <li class="active">首页</li>
-                <li v-for="item in 40" :key="item">首页</li>
+                <li v-for="item in 28" :key="item">首页</li>
             </ul>
         </div>
     </div>
@@ -24,12 +24,13 @@
 
             .left {
                 margin-right: 10px;
-                width: 57px;
+                width: 36px;
             }
 
             ul {
                 display: flex;
                 flex-wrap: wrap;
+                width: 800px;
 
                 li {
                     margin-right: 10px;

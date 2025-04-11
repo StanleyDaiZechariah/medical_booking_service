@@ -11,6 +11,22 @@
                 <Level />
                 <!-- 地区 -->
                  <Region />
+                 <!-- 医院的结构 -->
+                <div class="hospital">
+                    <Card class="item" v-for="item in 10" :key="item" />
+                    <!-- 展示分页组件 -->
+                    <div>
+                        <el-pagination
+                            v-model:current-page="pageNo"
+                            v-model:page-size="pageSize"
+                            :page-sizes="[10, 20, 30, 40]"
+                            :small="true"
+                            :background="true"
+                            layout="prev, pager, next, jumper, total, sizes"
+                            :total="100"
+                        />
+                    </div>
+                </div>
             </el-col>
             <el-col :span="4">456</el-col>
          </el-row>
@@ -26,9 +42,30 @@ import Search from "./conponent/Search.vue";
 import Level from "./conponent/Level.vue";
 // 引入首页地区的组件
 import Region from "./conponent/Region.vue";
+// 引入首页医院的结构
+import Card from "./conponent/Card.vue";
+
+
+// 分页器需要的数据
+import { ref } from "vue";
+// 分页器页码
+let pageNo = ref<number>(1);
+// 一页展示多少条数据
+let pageSize = ref<number>(10);
+// 选择分页器的尺寸
 
 </script>
 
 <style scoped lang="scss">
 
+    .hospital {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+
+        .item {
+            width: 48%;
+            margin: 5px 0;
+        }
+    }
 </style>
