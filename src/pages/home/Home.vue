@@ -57,10 +57,12 @@ let pageSize = ref<number>(10);
 // 选择分页器的尺寸
 let size = ref<string>("small");
 
+// 引入数据接口
+import type { Content, HospitalResponseData } from "@/api/home/types"; 
 // 引入二次封装的数据接口
 import { reqHospital } from "../../api/home/home";
 // 存储医院数据
-let hospitalData = ref([]);
+let hospitalData = ref<Content>([]);
 // 数据总数
 let total = ref<number>(0);
 
@@ -72,26 +74,29 @@ onMounted(() => {
 
 // 获取已有的医院的数据
 const getHosipitalInfo = async () => {
-    const result = await reqHospital(pageNo.value, pageSize.value);
-    if (result.data.code === 200) {
+    const result: HospitalResponseData = await reqHospital(pageNo.value, pageSize.value);
+    if (result.code === 200) {
         // 存储数据
-        hospitalData.value = result.data.data.content;
+        hospitalData.value = result.data.content;
         // 存储数据总数
-        total.value = result.data.data.totalElements;
+        total.value = result.data.totalElements;
     }
     console.log(result);
+    for(let atrr in result){
+        console.log(atrr);
+    }
 };
 
 // 页码改变的回调函数
 const currentChange = () => {
-    // 当前页码归为第一页
-    pageNo.value = 1;
     // 再次发送请求获取数据
     getHosipitalInfo();
 };
 
 // 分页器下拉菜单发生变化的回调函数
 const sizeChange = () => {
+    // 当前页码归为第一页
+    pageNo.value = 1;
     getHosipitalInfo();
 };
 
