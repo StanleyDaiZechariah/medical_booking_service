@@ -30,7 +30,10 @@
                             @size-change = "sizeChange"
                         />
             </el-col>
-            <el-col :span="4">456</el-col>
+            <el-col :span="4">
+                <!-- 推荐科室 -->
+                 <Tip />
+            </el-col>
          </el-row>
     </div>
 </template>
@@ -44,8 +47,10 @@ import Search from "./conponent/Search.vue";
 import Level from "./conponent/Level.vue";
 // 引入首页地区的组件
 import Region from "./conponent/Region.vue";
-// 引入首页医院的结构
+// 引入首页医院卡片的结构
 import Card from "./conponent/Card.vue";
+// 引入首页推荐科室的组件
+import Tip from "./conponent/Tip.vue";
 
 
 // 分页器需要的数据
