@@ -39,8 +39,12 @@ const getRegion = async () => {
 // 点击高亮回调
 const changeRegion = (value: string) => {
     regionFlag.value = value;
+
+    // 触发父组件的自定义事件
+    $emit('getRegion', value);
 }
 
+let $emit = defineEmits(['getRegion']);
 </script>
 
 <style scoped lang='scss'>

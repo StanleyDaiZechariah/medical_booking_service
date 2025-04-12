@@ -11,8 +11,8 @@ enum API {
 }
 
 // 获取已有的医院数据
-export const reqHospital = (page: number, limit: number) => {
-    return request.get<any, HospitalResponseData>(API.HOSPITAL_URL + `${page}/${limit}`);
+export const reqHospital = (page: number, limit: number, hostype = '', districtCode = '') => {
+    return request.get<any, HospitalResponseData>(API.HOSPITAL_URL + `${page}/${limit}?hostype=${hostype}&districtCode=${districtCode}`);
 }
 
 // 获取医院等级或者医院地区

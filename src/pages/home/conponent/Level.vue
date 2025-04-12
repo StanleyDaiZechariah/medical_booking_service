@@ -41,7 +41,11 @@ const getLevel = async () => {
 const changeLevel = (value: string) => {
     // 高亮响应式数据存储于level数值
     activeFlag.value = value;
+    // 触发自定义事件：将子组件数据传给父组件
+    $emit('getLevel', value);
 }
+
+let $emit = defineEmits(['getLevel']);
 </script>
 
 <style scoped lang="scss">

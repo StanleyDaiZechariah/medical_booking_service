@@ -8,15 +8,17 @@
          <el-row>
             <el-col :span="20">
                 <!-- 等级子组件 -->
-                <Level />
+                <Level @getLevel="getLevel" />
                 <!-- 地区 -->
-                 <Region />
+                 <Region @getRegion="getRegion" />
                  <!-- 医院的结构 -->
-                <div class="hospital">
+                <div class="hospital" v-if="hospitalData.length > 0">
                     <Card class="item" v-for="(item, index) in hospitalData" :key="index" :hospitalInfo = "item" />
-                    <!-- 展示分页组件 -->
-                    <div>
-                        <el-pagination
+                </div>
+                <el-empty v-else description="抱歉，没有找到相关医院" />
+
+                <!-- 展示分页组件 -->
+                <el-pagination
                             v-model:current-page="pageNo"
                             v-model:page-size="pageSize"
                             :page-sizes="[10, 20, 30, 40]"
@@ -27,8 +29,6 @@
                             @current-change = "currentChange"
                             @size-change = "sizeChange"
                         />
-                    </div>
-                </div>
             </el-col>
             <el-col :span="4">456</el-col>
          </el-row>
@@ -65,6 +65,11 @@ import { reqHospital } from "../../api/home/home";
 let hospitalData = ref<Content>([]);
 // 数据总数
 let total = ref<number>(0);
+// 存储医院的等级响应数据
+let hostype = ref<string>('');
+// 存储医院的地区响应数据
+let districtCode = ref<string>('');
+
 
 // 组件挂载完毕需要先发送一次请求
 onMounted(() => {
@@ -74,7 +79,7 @@ onMounted(() => {
 
 // 获取已有的医院的数据
 const getHosipitalInfo = async () => {
-    const result: HospitalResponseData = await reqHospital(pageNo.value, pageSize.value);
+    const result: HospitalResponseData = await reqHospital(pageNo.value, pageSize.value, hostype.value, districtCode.value);
     if (result.code === 200) {
         // 存储数据
         hospitalData.value = result.data.content;
@@ -93,6 +98,22 @@ const currentChange = () => {
 const sizeChange = () => {
     // 当前页码归为第一页
     pageNo.value = 1;
+    getHosipitalInfo();
+};
+
+// 子组件的自定义事件：向父组件传递等级数据
+const getLevel = (value: string) => {
+    // 收集等级参数
+    hostype.value = value;
+    // 再次发送请求
+    getHosipitalInfo();
+};
+
+// 子组件的自定义事件：向父组件传递地区数据
+const getRegion = (value: string) => {
+    // 收集地区参数
+    districtCode.value = value;
+    // 再次发送请求
     getHosipitalInfo();
 };
 
