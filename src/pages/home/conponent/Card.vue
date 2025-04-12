@@ -1,5 +1,5 @@
 <template>
-    <el-card class="box-card" shadow="hover">
+    <el-card class="box-card" shadow="hover" @click="goDetail">
         <div class="content">
             <div class="left">
                 <div class="hospital_name">
@@ -25,9 +25,22 @@
 </template>
 
 <script setup lang='ts' name='Card'>
+// 引入路由
+import { useRouter } from 'vue-router';
+
+let $router = useRouter();
 
 // 接收父组件传过来的props
 defineProps(['hospitalInfo']);
+
+// 点击卡片就跳转到详情页
+const goDetail = () => {
+
+    // 跳转到详情页
+    $router.push({
+        path: '/hospital',
+    });
+}
 </script>
 
 <style scoped lang="scss">
@@ -35,6 +48,7 @@ defineProps(['hospitalInfo']);
         display: flex;
         justify-content: space-between;
         align-items: center;
+        cursor: pointer;
 
         .right {
             img {

@@ -1,6 +1,6 @@
 <template>
     <div class="top">
-        <div class="content">
+        <div class="content" @click="goHome">
             <!-- 内容分为左侧和右侧 -->
              <div class="left">
                 <img src="../../asset/images/logo.png" alt="医院的logo">
@@ -15,7 +15,16 @@
 </template>
 
 <script setup lang='ts' name="HospitalTop">
+// 引入路由
+import { useRouter } from 'vue-router'
 
+// 路由实例
+const $router = useRouter();
+
+// 跳转函数
+const goHome = () => {
+    $router.push('/home');
+}
 </script>
 
 <style scoped lang="scss"> 
@@ -41,6 +50,7 @@
                 display: flex;
                 justify-content: center;
                 align-items: center;
+                cursor: pointer;
 
                 // logo图片和名称
                 img {
