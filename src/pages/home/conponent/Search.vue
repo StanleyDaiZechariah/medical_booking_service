@@ -8,7 +8,6 @@
         :fetch-suggestions="fetchData"
         :trigger-on-focus="false"
         @select="goDetail"></el-autocomplete>
-      />
     <el-button type="primary" size="default" :icon="Search">
         搜索
     </el-button>
@@ -40,7 +39,8 @@ const fetchData = async (keyword: string, cb: any) => {
     // 整理数据，把自己的数据变成对方想要的数据
     let showData = res.data.map(item => {
         return {
-            value: item.hosname
+            value: item.hosname,
+            hoscode: item.hoscode,
         }
     });
     // 给组件提供展示的数组
@@ -52,6 +52,9 @@ const goDetail = (item: any) => {
     // 跳转到详情页，并把医院名称传递过去
     $router.push({
         path: '/hospital/register',
+        query: {
+            hoscode: item.hoscode,
+        }
     })
 }
 </script>

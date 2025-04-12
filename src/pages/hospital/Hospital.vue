@@ -59,15 +59,29 @@
 import { Document, Menu as InconMenu, Setting, InfoFilled, Search, HomeFilled } from '@element-plus/icons-vue';
 // 引入路由
 import { useRouter, useRoute } from 'vue-router';
-const $router = useRouter();
+// 引入生命周期函数
+import { onMounted } from 'vue';
+// 引入pinia仓库
+import useDetailStore from '@/store/modules/hospitalDetail';
 
+
+// 引入路由
+const $router = useRouter();
 // 获取当前的路由信息
-const $route = useRoute();
+const $route = useRoute() as any;
+// 获取仓库对象
+const detailStore = useDetailStore();
+
 
 // 路由切换的回调函数
 const changeActive = (path: string) => {
-  $router.replace(path);
+  $router.push(path);
 }
+
+// 组件挂载完毕，就通知pinia仓库发送获取医院详情的数据，并存储在仓库中
+onMounted(() => {
+  detailStore.getHospitalDetail($route.query.hoscode);
+});
 
 </script>
 

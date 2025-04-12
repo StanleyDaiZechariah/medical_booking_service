@@ -7,10 +7,14 @@ import HospitalBottom from '@/component/hospital_bottom/HospitalBottom.vue'
 
 // 导入vue等内容的核心组件
 import { createApp } from 'vue'
+// 导入路由
 import Router from '@/router/router'
+// 导入element-plus
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 import 'element-plus/es/locale/lang/zh-cn'
+// 导入pinia
+import pinia from '@/store/index'
 
 // 导入App组件
 import App from '@/App.vue'
@@ -27,6 +31,8 @@ app.component('HospitalTop', HospitalTop)
 app.use(Router);
 // 安装element-plus
 app.use(ElementPlus);
+// 安装pinia
+app.use(pinia);
 
 // 挂载应用
 app.mount('#app');

@@ -31,7 +31,7 @@ import { useRouter } from 'vue-router';
 let $router = useRouter();
 
 // 接收父组件传过来的props
-defineProps(['hospitalInfo']);
+const props = defineProps(['hospitalInfo']);
 
 // 点击卡片就跳转到详情页
 const goDetail = () => {
@@ -39,6 +39,9 @@ const goDetail = () => {
     // 跳转到详情页
     $router.push({
         path: '/hospital/register',
+        query: {
+            hoscode: props.hospitalInfo.hoscode,
+        }
     });
 }
 </script>
