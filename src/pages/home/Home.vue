@@ -81,10 +81,6 @@ const getHosipitalInfo = async () => {
         // 存储数据总数
         total.value = result.data.totalElements;
     }
-    console.log(result);
-    for(let atrr in result){
-        console.log(atrr);
-    }
 };
 
 // 页码改变的回调函数
