@@ -16,7 +16,29 @@ export default createRouter({
         },
         {
             path: '/hospital',
-            component: () => import('@/pages/hospital/Hospital.vue')
+            component: () => import('@/pages/hospital/Hospital.vue'),
+            children: [
+                {
+                    path: 'register',
+                    component: () => import('@/pages/hospital/subPages/Register.vue'),
+                },
+                {
+                    path: 'detail',
+                    component: () => import('@/pages/hospital/subPages/Detail.vue'),
+                },
+                {
+                    path: 'notice',
+                    component: () => import('@/pages/hospital/subPages/Notice.vue'),
+                },
+                {
+                    path: 'close',
+                    component: () => import('@/pages/hospital/subPages/Close.vue'),
+                },
+                {
+                    path: 'lookup',
+                    component: () => import('@/pages/hospital/subPages/LookUp.vue'),
+                },
+            ]
         }
     ],
     // 滚动行为：控制滚动条的位置

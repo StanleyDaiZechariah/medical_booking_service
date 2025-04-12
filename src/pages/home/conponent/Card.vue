@@ -38,7 +38,7 @@ const goDetail = () => {
 
     // 跳转到详情页
     $router.push({
-        path: '/hospital',
+        path: '/hospital/register',
     });
 }
 </script>
