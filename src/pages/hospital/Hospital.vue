@@ -68,19 +68,24 @@ import useDetailStore from '@/store/modules/hospitalDetail';
 // 引入路由
 const $router = useRouter();
 // 获取当前的路由信息
-const $route = useRoute() as any;
+const $route = useRoute();
 // 获取仓库对象
 const detailStore = useDetailStore();
 
 
 // 路由切换的回调函数
 const changeActive = (path: string) => {
-  $router.push(path);
+  $router.push({
+    path: path,
+    query: {
+            hoscode: detailStore.hospitalDetail.hospital.hoscode,
+        }
+  });
 }
 
 // 组件挂载完毕，就通知pinia仓库发送获取医院详情的数据，并存储在仓库中
 onMounted(() => {
-  detailStore.getHospitalDetail($route.query.hoscode);
+  detailStore.getHospitalDetail($route.query.hoscode as string);
 });
 
 </script>
