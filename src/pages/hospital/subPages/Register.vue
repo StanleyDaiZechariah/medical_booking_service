@@ -40,16 +40,52 @@
           </div>
       </div>
     </div>
+
+    <!-- 展示相应的科室数据 -->
+    <div class="department">
+      <div class="leftNav">
+        <ul>
+          <li @click="changeInfo(index)" @mouseenter="changeIndex(index)"  v-for="(depart, index) in hospitalStore.departmentArr" :key="depart.depcode" :class="{active: index == currentIndex}">{{ depart.depname }}</li>
+        </ul>
+      </div>
+
+      <div class="departmentInfo">
+        <!-- 用一个div表示大科室与小科室 -->
+         <div class="showDepartment"  v-for="(depart) in hospitalStore.departmentArr" :key="depart.depcode">
+          <h1 class="cur">{{ depart.depname }}</h1>
+          <!-- 每一个大科室下的小科室 -->
+           <ul>
+            <li v-for="(item) in depart?.children" :key="item.depcode"> {{ item.depname }} </li>
+           </ul>
+         </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup lang='ts' name='Register'>
 // 引入医院详情仓库的数据
 import useDetailStore from '@/store/modules/hospitalDetail';
+import { ref } from 'vue';
 
 // 拿到数据
 let hospitalStore = useDetailStore();
+// 控制科室高亮的响应式数据
+let currentIndex = ref<number>(0);
 
+// 当鼠标悬浮到导航上面时切换科室高亮
+const changeIndex = (myindex: number) => {
+  currentIndex.value = myindex;
+}
+// 点击导航获取右侧科室（h1的标题）
+const changeInfo = (index: number) => {
+  let allH1 = document.querySelectorAll('.cur');
+  // 滚动到对应科室的位置
+  allH1[currentIndex.value].scrollIntoView({
+    behavior: "smooth",
+    block: "start",
+  });
+}
 </script>
 
 <style scoped lang='scss'>
@@ -103,6 +139,73 @@ let hospitalStore = useDetailStore();
         .time,.address,.route,.releaseTime,.rule {
           margin-top: 10px;
           color: #7f7f7f;
+        }
+      }
+    }
+
+    .department {
+      width: 100%;
+      height: 500px;
+      margin: 20px 0;
+      display: flex;
+
+      .leftNav {
+        width: 80px;
+        height: 500px;
+
+        ul {
+          width: 100%;
+          height: 100%;
+          background-color: rgb(248, 248, 248);
+          display: flex;
+          flex-direction: column;
+
+          li {
+            flex: 1;
+            text-align: center;
+            color: #7f7f7f;
+            font-size: 14px;
+            line-height: 30px;
+            cursor: pointer;
+
+            &.active {
+              border-left: 1px solid red;
+              color: red;
+              background-color: white;
+            }
+          }
+        }
+      }
+
+      .departmentInfo{
+        flex: 1;
+        margin-left: 20px;
+        height: 100%;
+        overflow: auto;
+        &::-webkit-scrollbar {
+          display: none;
+        }
+
+        .showDepartment {
+          h1 {
+            background-color: silver;
+            color: black;
+            font-size: 16px;
+            font-weight: bold;
+            line-height: 30px;
+          }
+
+          ul {
+            display: flex;
+            flex-wrap: wrap;
+
+            li {
+              color: #7f7f7f;
+              width: 33%;
+              line-height: 30px;
+              font-size: 14px;
+            }
+          }
         }
       }
     }
