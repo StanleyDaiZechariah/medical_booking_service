@@ -32,10 +32,17 @@ export interface HospitalDetail {
         "districtCode": string,
         "address": string,
         "logoData": string,
-        "intro": null,
+        "intro": string,
         "route": string,
         "status": number,
-        "bookingRule": null
+        "bookingRule": {
+            "cycle": number,
+            "releaseTime": string,
+            "stopTime": string,
+            "quitDay": number,
+            "quitTime": string,
+            "rule": string[]
+        }
     }
 }
 
