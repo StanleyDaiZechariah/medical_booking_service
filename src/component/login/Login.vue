@@ -17,7 +17,10 @@
                                     <el-input  placeholder="请你输入手机验证码" :prefix-icon="Lock" v-model="loginParams.code"></el-input>
                                 </el-form-item>
                                 <el-form-item >
-                                    <el-button @click="getCode" :disabled="!isPhone ? true : false">获取验证码</el-button>
+                                    <el-button @click="getCode" :disabled="!isPhone ? true : false">
+                                        <CountDown v-if="flag" :flag="flag" @getFlag="getFlag" />
+                                        <span v-else>获取验证码</span>
+                                    </el-button>
                                 </el-form-item>
                             </el-form>
                             <!-- 登录表单底部样式 -->
@@ -77,6 +80,8 @@
 import useUserStore from '@/store/modules/user';
 // 引入图表
 import { User, Lock } from '@element-plus/icons-vue';
+// 引入验证按钮倒计时组件
+import CountDown from '../countDown/CountDown.vue';
 import { reactive, ref, computed } from 'vue';
 
 // 用户仓库实例
@@ -90,6 +95,9 @@ let loginParams = reactive({
     // 手机验证码
     code: '',
 });
+// 定义一个响应式数据控制倒计时组件的显示与隐藏
+let flag = ref<boolean>(false);
+
 
 // 关闭窗口
 const closeDialog = () => {
@@ -114,6 +122,8 @@ let isPhone = computed(() => {
 const getCode = async () => {
     // 通知pinia仓库去获取验证码
     try {
+        // 开启倒计时
+        flag.value = true;
         await userStore.getCodes(loginParams.phone);
         alert('验证码已发送，请注意查收');
         loginParams.code = userStore.code;
@@ -121,6 +131,11 @@ const getCode = async () => {
         alert('验证码发送失败，请稍后再试');
         console.log('错误信息：',error);
     }
+}
+// 计数器子组件绑定的自定义事件
+const getFlag = (val: boolean) => {
+    // 倒计时模式结束
+    flag.value = false;
 }
 </script>
 
