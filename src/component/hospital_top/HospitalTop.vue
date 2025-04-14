@@ -23,7 +23,7 @@
                             <el-dropdown-item>实名认证</el-dropdown-item>
                             <el-dropdown-item>挂号订单</el-dropdown-item>
                             <el-dropdown-item>就诊人管理</el-dropdown-item>
-                            <el-dropdown-item>退出登录</el-dropdown-item>
+                            <el-dropdown-item @click="logout">退出登录</el-dropdown-item>
                         </el-dropdown-menu>
                     </template>
                 </el-dropdown>
@@ -53,7 +53,13 @@ const goHome = () => {
 const login = () => {
     userStore.visiable = true;
 }
-
+// 退出登录按钮的回调
+const logout = () => {
+    // 通知pinia仓库清楚用户相关信息
+    userStore.logOut();
+    // 利用编程式路由器导航跳转到首页
+    $router.replace('/home');
+}
 
 </script>
 

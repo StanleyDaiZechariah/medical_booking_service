@@ -4,7 +4,7 @@ import { defineStore } from "pinia";
 import { repCode, repUserLogin } from "@/api/hospital/hospital";
 import type { LoginData, UserInfo, UserLoginResponseData, } from "@/api/hospital/types";
 import type { UserState } from './interface/detail'
-import { GET_TOKEN, SET_TOKEN } from "@/utils/user";
+import { GET_TOKEN, SET_TOKEN, REMOVE_TOKEN } from "@/utils/user";
 
 const useUserStore = defineStore("User", {
     state: (): UserState => ({
@@ -37,6 +37,14 @@ const useUserStore = defineStore("User", {
             } else {
                 return Promise.reject(new Error(res.message));
             }
+        },
+
+        // 退出登录
+        logOut() {
+            // 清空仓库数据
+            this.userInfo = { name: "", token: "" };
+            // 清空本地存储数据
+            REMOVE_TOKEN();
         }
     },
     getters: {
