@@ -9,13 +9,13 @@
                     <div class="login">
                         <!-- 手机号码登录 -->
                         <div v-show="scene == 0">
-                            <el-form>
+                            <el-form v-model="loginParams" :rules="rule">
                                 <!-- 手机号码输入框 -->
-                                <el-form-item  >
+                                <el-form-item  prop="phone">
                                     <el-input  placeholder="请你输入手机号码" :prefix-icon="User" v-model="loginParams.phone"></el-input>
                                 </el-form-item>
                                 <!-- 验证码输入框 -->
-                                <el-form-item  >
+                                <el-form-item  prop="code">
                                     <el-input  placeholder="请你输入手机验证码" :prefix-icon="Lock" v-model="loginParams.code"></el-input>
                                 </el-form-item>
                                 <!-- 获取验证码的按钮 -->
@@ -104,6 +104,17 @@ let loginParams = reactive({
 });
 // 定义一个响应式数据控制倒计时组件的显示与隐藏
 let flag = ref<boolean>(false);
+// 表单校验的规则
+const rule = {
+    // 手机号码的校验规则
+    // required表示必填项，message表示错误提示信息，trigger表示触发验证的事件
+    phone: [
+        { required: true, message: '请输入11位手机号码', trigger: 'blur', min: 11 },
+    ],
+    code: [
+        { required: true, message: '请输入6位验证码', trigger: 'blur', min: 6 }
+    ]
+}
 
 
 // 关闭窗口
