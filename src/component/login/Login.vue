@@ -7,16 +7,17 @@
                 <!-- 左侧的结构 -->
                 <el-col :span="12">
                     <div class="login">
+                        <!-- 手机号码登录 -->
                         <div v-show="scene == 0">
                             <el-form>
                                 <el-form-item  >
-                                    <el-input  placeholder="请你输入手机号码" :prefix-icon="User"></el-input>
+                                    <el-input  placeholder="请你输入手机号码" :prefix-icon="User" v-model="loginParams.phone"></el-input>
                                 </el-form-item>
                                 <el-form-item  >
-                                    <el-input  placeholder="请你输入手机验证码" :prefix-icon="Lock"></el-input>
+                                    <el-input  placeholder="请你输入手机验证码" :prefix-icon="Lock" v-model="loginParams.code"></el-input>
                                 </el-form-item>
                                 <el-form-item >
-                                    <el-button >获取验证码</el-button>
+                                    <el-button @click="getCode" :disabled="!isPhone ? true : false">获取验证码</el-button>
                                 </el-form-item>
                             </el-form>
                             <!-- 登录表单底部样式 -->
@@ -27,6 +28,7 @@
                             </div>
                         </div>
 
+                        <!-- 微信扫码登录 -->
                         <div class="webChat" v-show="scene == 1">
                             微信扫码登录的结构
                         </div>
@@ -75,12 +77,19 @@
 import useUserStore from '@/store/modules/user';
 // 引入图表
 import { User, Lock } from '@element-plus/icons-vue';
-import { ref } from 'vue';
+import { reactive, ref, computed } from 'vue';
 
 // 用户仓库实例
 let userStore = useUserStore();
 // 表单登录组件响应式数据
 let scene = ref<number>(0); // 0 是手机号登录，1 是微信扫码
+// 手机表单数据----手机号码
+let loginParams = reactive({
+    // 手机手机号码
+    phone: '',
+    // 手机验证码
+    code: '',
+});
 
 // 关闭窗口
 const closeDialog = () => {
@@ -94,12 +103,29 @@ const changeScene = () => {
         scene.value = 0;
     }
 }
+// 验证手机号码是否为正确格式
+let isPhone = computed(() => {
+    // 手机号码正则表达式
+    const reg = /^(13[0-9]|14[01456879]|15[0-35-9]|16[2567]|17[0-8]|18[0-9]|19[0-35-9])\d{8}$/;
+    // 返回判断结果的布尔值：true表示手机号码格式正确，false表示手机号码格式错误
+    return reg.test(loginParams.phone);
+});
+// 获取验证码的回调
+const getCode = async () => {
+    // 通知pinia仓库去获取验证码
+    try {
+        await userStore.getCodes(loginParams.phone);
+        alert('验证码已发送，请注意查收');
+        loginParams.code = userStore.code;
+    } catch (error) {
+        alert('验证码发送失败，请稍后再试');
+        console.log('错误信息：',error);
+    }
+}
 </script>
 
 <style scoped lang="scss">
     .login_container {
-        
-
         :deep(.el-dialog__body) {
             border-top: 1px solid #ccc;
             border-bottom: 1px solid #ccc;
