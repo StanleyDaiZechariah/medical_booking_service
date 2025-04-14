@@ -55,7 +55,7 @@
           <h1 class="cur">{{ depart.depname }}</h1>
           <!-- 每一个大科室下的小科室 -->
            <ul>
-            <li v-for="(item) in depart?.children" :key="item.depcode"> {{ item.depname }} </li>
+            <li @click="showLogin" v-for="(item) in depart?.children" :key="item.depcode"> {{ item.depname }} </li>
            </ul>
          </div>
       </div>
@@ -66,12 +66,18 @@
 <script setup lang='ts' name='Register'>
 // 引入医院详情仓库的数据
 import useDetailStore from '@/store/modules/hospitalDetail';
+// 引入用户仓库的数据
+import useUserStore from '@/store/modules/user';
 import { ref } from 'vue';
+
 
 // 拿到数据
 let hospitalStore = useDetailStore();
 // 控制科室高亮的响应式数据
 let currentIndex = ref<number>(0);
+// 用户仓库实例
+let userStore = useUserStore();
+
 
 // 当鼠标悬浮到导航上面时切换科室高亮
 const changeIndex = (myindex: number) => {
@@ -85,6 +91,10 @@ const changeInfo = (index: number) => {
     behavior: "smooth",
     block: "start",
   });
+}
+// 点击科室弹出登录页面
+const showLogin = () => {
+  userStore.visiable = true;
 }
 </script>
 
@@ -204,6 +214,11 @@ const changeInfo = (index: number) => {
               width: 33%;
               line-height: 30px;
               font-size: 14px;
+              cursor: pointer;
+
+              &:hover {
+                color: skyblue;
+              }
             }
           }
         }

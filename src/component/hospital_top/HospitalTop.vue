@@ -8,7 +8,7 @@
              </div>
              <div class="right">
                 <p class="help">帮助中心</p>
-                <p class="login">登录/注册</p>
+                <p class="login" @click="login">登录/注册</p>
              </div>
         </div>
     </div>
@@ -17,14 +17,24 @@
 <script setup lang='ts' name="HospitalTop">
 // 引入路由
 import { useRouter } from 'vue-router'
+// 获取user仓库的数据(visable)可以控制login组件的对话框的显示与隐藏
+import useUserStore from '@/store/modules/user';
 
 // 路由实例
 const $router = useRouter();
+// 用户仓库实例
+let userStore = useUserStore();
 
 // 跳转函数
 const goHome = () => {
     $router.push('/home');
 }
+// 点击登录预注册按钮弹出对话框
+const login = () => {
+    userStore.visiable = true;
+}
+
+
 </script>
 
 <style scoped lang="scss"> 
@@ -71,6 +81,7 @@ const goHome = () => {
                 align-items: center;
                 font-size: 14px;
                 color: #bbb;
+                cursor: pointer;
 
                 // 帮助中心和登录注册按钮
                 .help {

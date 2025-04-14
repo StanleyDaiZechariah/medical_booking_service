@@ -9,12 +9,15 @@
     <HospitalTop />
 
     <!-- 展示整个路由组件的区域 -->
-     <div class="content">
+    <div class="content">
        <router-view />
-     </div>
+    </div>
 
-     <!-- 底部的全局组件 -->
-      <HospitalBottom />
+    <!-- 底部的全局组件 -->
+    <HospitalBottom />
+      
+    <!-- 登录组件 -->
+    <Login />
   </div>
 </template>
 
