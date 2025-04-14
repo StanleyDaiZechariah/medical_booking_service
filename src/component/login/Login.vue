@@ -9,7 +9,7 @@
                     <div class="login">
                         <!-- 手机号码登录 -->
                         <div v-show="scene == 0">
-                            <el-form v-model="loginParams" :rules="rule">
+                            <el-form v-model="loginParams" :rules="rule" ref="form">
                                 <!-- 手机号码输入框 -->
                                 <el-form-item  prop="phone">
                                     <el-input  placeholder="请你输入手机号码" :prefix-icon="User" v-model="loginParams.phone"></el-input>
@@ -104,17 +104,47 @@ let loginParams = reactive({
 });
 // 定义一个响应式数据控制倒计时组件的显示与隐藏
 let flag = ref<boolean>(false);
+
+// 自定义校验规则：手机号自定义校验规则
+const validatorPhone = (rule: any,value: any,callback: any) => {
+    // rule: 即为表单校验规则对象
+    // value: 即为当前输入框的值
+    // callback: 校验成功的回调函数
+    
+    const reg = /^(13[0-9]|14[01456879]|15[0-35-9]|16[2567]|17[0-8]|18[0-9]|19[0-35-9])\d{8}$/;
+    if(reg.test(value)){
+        console.log('手机号码格式正确');
+        callback();
+    } else {
+        callback(new Error('请输入正确的手机号码'));
+    }
+
+};
+// 自定义校验规则：验证码自定义校验规则
+const validatorCode = (rule: any,value: any,callback: any) => {
+    const reg = /^\d{6}$/;
+    if(reg.test(value)){
+        console.log('校验码格式正确');
+        callback();
+    } else {
+        callback(new Error('请输入正确格式的验证码'));
+    }
+}
 // 表单校验的规则
 const rule = {
     // 手机号码的校验规则
     // required表示必填项，message表示错误提示信息，trigger表示触发验证的事件
-    phone: [
-        { required: true, message: '请输入11位手机号码', trigger: 'blur', min: 11 },
-    ],
-    code: [
-        { required: true, message: '请输入6位验证码', trigger: 'blur', min: 6 }
-    ]
+    
+    // 普通校验规则
+    // phone: [{ required: true, message: '请输入11位手机号码', trigger: 'blur', min: 11 },],
+    // code: [{ required: true, message: '请输入6位验证码', trigger: 'blur', min: 6 }],
+
+    // 自定义校验规则
+    phone: [{trigger: ['change', 'blur'], validator: validatorPhone }],
+    code: [{trigger: ['change', 'blur'], validator: validatorCode }],
 }
+// 获取表单实例
+const form = ref<any>();
 
 
 // 关闭窗口
@@ -164,6 +194,8 @@ const getFlag = (val: boolean) => {
 }
 // 点击用户登录按钮回调
 const login = async () => {
+    // 保证表单校验能够符合要求
+    await form.value.validate();
     // 发起登录请求
     // 登录请求成功：顶部组件需要展示用户的名字、对话框关闭
     // 登录请求失败：弹出对应登录失败的错误
@@ -180,7 +212,6 @@ const login = async () => {
         })
     }
 }
-
 </script>
 
 <style scoped lang="scss">
