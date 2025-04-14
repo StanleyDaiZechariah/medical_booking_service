@@ -1,5 +1,9 @@
 <script setup lang="ts">
+// 引入用户仓库
+import  useUserStore  from "@/store/modules/user";
 
+// 用户仓库实例
+const userStore = useUserStore();
 
 </script>
 
@@ -17,7 +21,8 @@
     <HospitalBottom />
       
     <!-- 登录组件 -->
-    <Login />
+     <!-- 这里利用组件的生命周期来达到清楚校验信息的目的，不过是直接清楚了用户数据仓库 -->
+    <Login v-if="userStore.visiable" />
   </div>
 </template>
 

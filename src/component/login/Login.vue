@@ -149,8 +149,10 @@ const form = ref<any>();
 
 // 关闭窗口
 const closeDialog = () => {
+    // 重新显示手机号码登陆方式
+    scene.value = 0;
+    // 关闭窗口
     userStore.visiable = false;
-    scene.value = 0
 }
 // 点击微信扫码登录和小图标就切换为微信扫码
 const changeScene = () => {
