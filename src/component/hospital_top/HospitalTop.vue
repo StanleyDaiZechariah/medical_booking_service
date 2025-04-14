@@ -1,8 +1,8 @@
 <template>
     <div class="top">
-        <div class="content" @click="goHome">
+        <div class="content">
             <!-- 内容分为左侧和右侧 -->
-             <div class="left">
+             <div class="left" @click="goHome">
                 <img src="../../asset/images/logo.png" alt="医院的logo">
                 <p>尚医通 &nbsp; 预约挂号统一平台</p>
              </div>
