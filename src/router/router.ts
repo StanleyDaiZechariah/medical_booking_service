@@ -20,7 +20,7 @@ export default createRouter({
             children: [
                 {
                     path: 'register',
-                    component: () => import('@/pages/hospital/subPages/Register.vue'),
+                    component: () => import('@/pages/hospital/subPages/register/Register.vue'),
                 },
                 {
                     path: 'detail',
@@ -38,6 +38,10 @@ export default createRouter({
                     path: 'lookup',
                     component: () => import('@/pages/hospital/subPages/LookUp.vue'),
                 },
+                {
+                    path: 'register_step1',
+                    component: () => import('@/pages/hospital/subPages/register/Register_step1.vue'),
+                }
             ]
         }
     ],

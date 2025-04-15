@@ -4,7 +4,6 @@ import  useUserStore  from "@/store/modules/user";
 
 // 用户仓库实例
 const userStore = useUserStore();
-
 </script>
 
 <template>
@@ -21,7 +20,7 @@ const userStore = useUserStore();
     <HospitalBottom />
       
     <!-- 登录组件 -->
-     <!-- 这里利用组件的生命周期来达到清楚校验信息的目的，不过是直接清楚了用户数据仓库 -->
+     <!-- 这里利用v-if的特点来达到清除校验信息的目的，不过是直接清除了用户数据仓库 -->
     <Login v-if="userStore.visiable" />
   </div>
 </template>

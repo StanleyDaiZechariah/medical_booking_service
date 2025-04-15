@@ -59,6 +59,8 @@ const logout = () => {
     userStore.logOut();
     // 利用编程式路由器导航跳转到首页
     $router.replace('/home');
+    // 清空页面栈
+    $router.clearRoutes();
 }
 
 </script>

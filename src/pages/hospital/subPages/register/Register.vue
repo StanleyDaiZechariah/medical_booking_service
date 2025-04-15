@@ -55,7 +55,7 @@
           <h1 class="cur">{{ depart.depname }}</h1>
           <!-- 每一个大科室下的小科室 -->
            <ul>
-            <li @click="showLogin" v-for="(item) in depart?.children" :key="item.depcode"> {{ item.depname }} </li>
+            <li @click="showLogin(item)" v-for="(item) in depart?.children" :key="item.depcode"> {{ item.depname }} </li>
            </ul>
          </div>
       </div>
@@ -65,10 +65,16 @@
 
 <script setup lang='ts' name='Register'>
 // 引入医院详情仓库的数据
+import type { Department } from '@/api/hospital/types';
 import useDetailStore from '@/store/modules/hospitalDetail';
 // 引入用户仓库的数据
-import useUserStore from '@/store/modules/user';
+// import useUserStore from '@/store/modules/user';
+// 引入响应式数据
 import { ref } from 'vue';
+// 引入路由
+import { useRouter, useRoute } from 'vue-router';
+
+
 
 
 // 拿到数据
@@ -76,8 +82,11 @@ let hospitalStore = useDetailStore();
 // 控制科室高亮的响应式数据
 let currentIndex = ref<number>(0);
 // 用户仓库实例
-let userStore = useUserStore();
-
+// let userStore = useUserStore();
+// 获取路由器
+let $router = useRouter();
+// 获取路由对象
+let $route = useRoute();
 
 // 当鼠标悬浮到导航上面时切换科室高亮
 const changeIndex = (myindex: number) => {
@@ -93,8 +102,19 @@ const changeInfo = (index: number) => {
   });
 }
 // 点击科室弹出登录页面
-const showLogin = () => {
-  userStore.visiable = true;
+const showLogin = (item: Department) => {
+  // 未登录就弹出对话框
+  // userStore.visiable = true;
+
+  // 点击某一个医院的科室就可以跳转到预约挂号详情页面
+  $router.push({
+    path: '/hospital/register_step1',
+    query: {
+      hoscode: $route.query.hoscode,
+      depcode: item.depcode
+    }
+  })
+  
 }
 </script>
 
