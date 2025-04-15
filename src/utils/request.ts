@@ -7,7 +7,10 @@
 
 // 引入axios
 import axios from 'axios';
+// 引入element-plus的消息提示插件
 import { ElMessage } from 'element-plus';
+// 引入用户相关的仓库
+import useUserStore from '@/store/modules/user';
 
 // axios.create()方法创建axios实例，并设置默认配置
 const request = axios.create({
@@ -17,6 +20,11 @@ const request = axios.create({
 
 // 请求拦截器
 request.interceptors.request.use((config) => {
+    // 获取用户仓库
+    let userStore = useUserStore();
+    if (userStore.userInfo.token) {
+        config.headers.token = userStore.userInfo.token;
+    }
     // config：请求拦截器回调注入的对象，配置对象身上最重要的一件事情headers属性
     // 可以通过请求头携带公共参数-token
     return config;

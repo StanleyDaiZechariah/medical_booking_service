@@ -82,3 +82,33 @@ export interface UserInfo {
 export interface UserLoginResponseData extends ResponseData {
     data: UserInfo
 }
+
+// 医院科室接口返回数据的ts类型
+export interface BaseMap {
+    "workDateString": string,
+    "releaseTime": string,
+    "bigname": string,
+    "stopTime": string,
+    "depname": string,
+    "hosname": string
+}
+
+export interface WorkData {
+    "workDate": string,
+    "workDateMd": string,
+    "dayOfWeek": string,
+    "docCount": number,
+    "reservedNumber": null,
+    "availableNumber": number,
+    "status": number
+}
+
+export type BookingScheduleList = WorkData[];
+
+export interface HospitalWorkData extends ResponseData {
+    data: {
+        total: number,
+        bookingScheduleList: BookingScheduleList,
+        baseMap: BaseMap
+    }
+}
