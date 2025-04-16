@@ -17,12 +17,96 @@
             </div>
         </el-card>
         <!-- 展示医生的信息 -->
+        <el-card class=" box-card">
+            <template #header>
+                <div class="card-header">
+                    <span>挂号信息</span>
+                </div>
+            </template>
+            <!-- 卡片身体：展示医生的详细信息 -->
+            <el-descriptions class="margin-top" :column="2" border>
+                <!-- 第一个描述项：就诊日期 -->
+                <el-descriptions-item>
+                    <template #label>
+                        <div class="cell-item">
+                            就诊日期：
+                        </div>
+                    </template>
+                    2023年6月3日
+                </el-descriptions-item>
+
+                <!-- 第二个描述项：就诊医院 -->
+                <el-descriptions-item>
+                    <template #label>
+                        <div class="cell-item">
+                            就诊医院：
+                        </div>
+                    </template>
+                    北京市第一人民医院
+                </el-descriptions-item>
+
+                <!-- 第三个描述项：就诊科室 -->
+                <el-descriptions-item>
+                    <template #label>
+                        <div class="cell-item">
+                            就诊科室：
+                        </div>
+                    </template>
+                    心胸外科
+                </el-descriptions-item>
+
+                <!-- 第四个描述项：医生姓名 -->
+                <el-descriptions-item>
+                    <template #label>
+                        <div class="cell-item">
+                            医生姓名：
+                        </div>
+                    </template>
+                    张三
+                </el-descriptions-item>
+
+                <!-- 第五个描述项：医生职称-->
+                <el-descriptions-item>
+                    <template #label>
+                        <div class="cell-item">
+                            医生职称：
+                        </div>
+                    </template>
+                    副主任医师
+                </el-descriptions-item>
+
+                <!-- 第六个描述项：医生专长 -->
+                <el-descriptions-item>
+                    <template #label>
+                        <div class="cell-item">
+                            医生专长：
+                        </div>
+                    </template>
+                    内分泌与代谢性疾病
+                </el-descriptions-item>
+
+                <!-- 第七个描述项：医事服务费 -->
+                <el-descriptions-item>
+                    <template #label>
+                        <div class="cell-item">
+                            医事服务费：
+                        </div>
+                    </template>
+                    100
+                </el-descriptions-item>
+            </el-descriptions>
+        </el-card>
+
+        <!-- 确定挂号按钮 -->
+        <div class="btn">
+            <el-button type="primary" size="default">确定挂号</el-button>
+        </div>
     </div>
 </template>
 
 <script setup lang="ts" name="Register_step2">
 // 引入element-plus的icon组件
-import {Edit} from '@element-plus/icons-vue';
+import { Edit } from '@element-plus/icons-vue';
 // 展示就诊人的组件
 import Visitor from './Visitor.vue';
 
@@ -54,6 +138,12 @@ import Visitor from './Visitor.vue';
                 margin: 5px;
             }
         }
+    }
+
+    .btn {
+        display: flex;
+        justify-content: center;
+        margin: 10px 0;
     }
 }
 </style>
