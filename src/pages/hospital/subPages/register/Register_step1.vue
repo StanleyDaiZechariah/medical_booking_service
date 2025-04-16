@@ -76,7 +76,7 @@
                         <!-- 右侧区域展示挂号的钱数 -->
                         <div class="right">
                             <div class="money">￥{{ doc.amount }}</div>
-                            <el-button type="primary" size="default">{{ doc.availableNumber }}</el-button>
+                            <el-button type="primary" size="default" @click="goStep2(doc)">{{ doc.availableNumber }}</el-button>
                         </div>
                     </div>
                 </div>
@@ -130,7 +130,7 @@ import { onMounted, ref, computed } from "vue";
 // 引入后端接口
 import { repHospitalDoctor, repHospitalWork } from "@/api/hospital/hospital";
 // 引入路由
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 // 引入接口类型
 import type { DocArr, Doctor, DoctorResponseData, HospitalWorkData } from "@/api/hospital/types";
 
@@ -149,6 +149,8 @@ let workData = ref<any>({});
 let workTime:any = ref({});
 // 存储排班医生的数据
 let docArr = ref<DocArr>([]);
+// 路由跳转
+let $router = useRouter();
 
 // 组件挂载完毕就发送一次请求
 onMounted(() => {
@@ -203,6 +205,18 @@ let afternoonArr = computed(() => {
         return item.workTime == 1;
     });
 });
+// 路由跳转进入挂号业务的选择就诊人的页面
+const goStep2 = (item: Doctor) => {
+    // 编程式跳转到挂号业务的选择就诊人的页面
+    // console.log(item);
+    $router.push({
+        path: '/hospital/register_step2',
+        query: {
+            docId: item.id
+        }
+    });
+
+}
 </script>
 
 <style scoped lang="scss">
@@ -248,6 +262,7 @@ let afternoonArr = computed(() => {
                 display: flex;
                 flex-direction: column;
                 align-items: center;
+                cursor: pointer;
 
                 &.active {
                     border: 1px solid #7f7f7f;
