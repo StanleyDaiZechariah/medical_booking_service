@@ -38,5 +38,10 @@ export const repUserLogin = (data: LoginData) => {
 
 // 获取预约挂号的数据
 export const repHospitalWork = (page: number, limit: number, hoscode: string, depcode: string) => {
-    return request.get<any, HospitalWorkData>(API.HOSPITAL_WORK_URL + `${page}/${limit}/${hoscode}/${depcode}`);
+    return request.get<any, HospitalWorkData>(API.HOSPITAL_WORK_URL + `${page}/${limit}/${hoscode}/${depcode}`,{
+        params: {
+            start: '2023-11-05',
+            end: '2023-11-05',
+        }
+    });
 }
