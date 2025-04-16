@@ -93,6 +93,7 @@ export interface BaseMap {
     "hosname": string
 }
 
+// 代表医院某天的工作日程列表数据类型
 export interface WorkData {
     "workDate": string,
     "workDateMd": string,
@@ -105,10 +106,44 @@ export interface WorkData {
 
 export type BookingScheduleList = WorkData[];
 
+// 代表医院某天的工作日程列表接口返回数据类型
 export interface HospitalWorkData extends ResponseData {
     data: {
         total: number,
         bookingScheduleList: BookingScheduleList,
         baseMap: BaseMap
     }
+}
+
+
+// 代表的是医院某科室医生数据的ts类型
+export interface Doctor {
+    "id": string,
+    "createTime": string,
+    "updateTime": string,
+    "isDeleted": number,
+    "param": {
+        "dayOfWeek": string,
+        "depname": string,
+        "hosname": string
+    },
+    "hoscode": string,
+    "depcode": string,
+    "title": string,
+    "docname": string,
+    "skill": string,
+    "workDate": string,
+    "workTime": number,
+    "reservedNumber": number,
+    "availableNumber": number,
+    "amount": number,
+    "status": number,
+    "hosScheduleId": string
+}
+
+export type DocArr = Doctor[];
+
+// 医生排班接口的返回数据类型
+export interface DoctorResponseData extends ResponseData {
+    data: DocArr
 }

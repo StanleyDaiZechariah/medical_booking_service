@@ -18,7 +18,8 @@
                     active:
                         item.status == -1 ||
                         (item.status == 0 && item.availableNumber == -1),
-                }" v-for="item in workData.bookingScheduleList" :key="item">
+                    cur: item.workDate == workTime.workDate
+                }" v-for="item in workData.bookingScheduleList" :key="item" @click="changeTime(item)">
                     <div class="upper">{{ item.workDate }} - {{ item.dayOfWeek }}</div>
                     <div class="lower">
                         <div v-if="item.status == -1">停止挂号</div>
@@ -41,12 +42,12 @@
         <!-- 底部展示医生的结构 -->
         <div class="bottom">
             <!-- 展示即将放号的时间 -->
-            <div class="will">
+            <div class="will" v-if="workTime.status == 1">
                 <span class="time">2023年6月3日08：30</span>
                 <span class="willText">放号</span>
             </div>
             <!-- 展示医生的结构：上午、下午 -->
-            <div class="doctor">
+            <div class="doctor" v-else>
                 <!-- 上午 -->
                 <div class="morning">
                     <!-- 顶部文字提示 -->
@@ -60,22 +61,22 @@
                         <span class="text">上午号源</span>
                     </div>
                     <!-- 每一个医生的信息 -->
-                    <div class="doc_info" v-for="item in 3" :key="item">
+                    <div class="doc_info" v-for="doc in morningArr" :key="doc.id">
                         <!-- 左侧展示医生的名字技能 -->
                         <div class="left">
                             <div class="info">
-                                <span>副主任医师</span>
+                                <span>{{ doc.title }}</span>
                                 <span>|</span>
-                                <span>严莉莉</span>
+                                <span>{{ doc.docname }}</span>
                             </div>
                             <div class="skill">
-                                内分泌科常见病
+                                {{ doc.skill }}
                             </div>
                         </div>
                         <!-- 右侧区域展示挂号的钱数 -->
                         <div class="right">
-                            <div class="money">￥100</div>
-                            <el-button type="primary" size="default">挂号</el-button>
+                            <div class="money">￥{{ doc.amount }}</div>
+                            <el-button type="primary" size="default">{{ doc.availableNumber }}</el-button>
                         </div>
                     </div>
                 </div>
@@ -99,22 +100,22 @@
                         <span class="text">下午号源</span>
                     </div>
                     <!-- 每一个医生的信息 -->
-                    <div class="doc_info" v-for="item in 2" :key="item">
+                    <div class="doc_info" v-for="doc in afternoonArr" :key="doc.id">
                         <!-- 左侧展示医生的名字技能 -->
                         <div class="left">
                             <div class="info">
-                                <span>副主任医师</span>
+                                <span>{{ doc.title }}</span>
                                 <span>|</span>
-                                <span>严莉莉</span>
+                                <span>{{ doc.docname }}</span>
                             </div>
                             <div class="skill">
-                                内分泌科常见病
+                                {{ doc.skill }}
                             </div>
                         </div>
                         <!-- 右侧区域展示挂号的钱数 -->
                         <div class="right">
-                            <div class="money">￥100</div>
-                            <el-button type="primary" size="default">挂号</el-button>
+                            <div class="money">￥{{ doc.amount }}</div>
+                            <el-button type="primary" size="default">{{ doc.availableNumber }}</el-button>
                         </div>
                     </div>
                 </div>
@@ -125,13 +126,13 @@
 
 <script setup lang="ts" name="Register_step1">
 // 引入vue组件
-import { onMounted, ref } from "vue";
+import { onMounted, ref, computed } from "vue";
 // 引入后端接口
-import { repHospitalWork } from "@/api/hospital/hospital";
+import { repHospitalDoctor, repHospitalWork } from "@/api/hospital/hospital";
 // 引入路由
 import { useRoute } from "vue-router";
 // 引入接口类型
-import type { HospitalWorkData } from "@/api/hospital/types";
+import type { DocArr, Doctor, DoctorResponseData, HospitalWorkData } from "@/api/hospital/types";
 
 // 当前的页码
 let pageNo = ref<number>(1);
@@ -141,6 +142,13 @@ let limit = ref<number>(6);
 let $route = useRoute();
 // 存储医院科室挂号的数据
 let workData = ref<any>({});
+/* 
+    由于后端接口没有再维护，所以这里只是写一下正常的配置流程
+    我已经把日期写死了，实际上应该是从后端获取的
+*/
+let workTime:any = ref({});
+// 存储排班医生的数据
+let docArr = ref<DocArr>([]);
 
 // 组件挂载完毕就发送一次请求
 onMounted(() => {
@@ -156,8 +164,45 @@ const fetchWorkData = async () => {
     );
     if (res.code == 200) {
         workData.value = res.data;
+        // 存储获取的挂号数据的第一个
+        workTime.value = workData.value.bookingScheduleList[0];
+        // 获取一次医生的数据
+        getDoctorWorkData();
     }
 };
+// 获取医生某一天排班的数据
+const getDoctorWorkData = async () => {
+    // 医院的编号
+    let hoscode = $route.query.hoscode as string;
+    // 科室的编号
+    let depcode = $route.query.depcode as string;
+    // 时间 （这里我写死了）
+    let workDate = "2024-11-17";
+    let res:DoctorResponseData =  await repHospitalDoctor(hoscode, depcode, workDate);
+    console.log(res);
+    if (res.code == 200) {
+        docArr.value = res.data;
+    }
+}
+// 点击顶部某一天触发回调
+const changeTime = (item: any) => {
+    // 存储选择那一天的数据
+    workTime.value = item;
+    // 再发送一次请求
+    getDoctorWorkData();
+}
+// 计算出上午排班医生的数据
+let morningArr = computed(() => {
+    return docArr.value.filter((item: Doctor) => {
+        return item.workTime == 0;
+    });
+});
+// 计算出下午排班医生的数据
+let afternoonArr = computed(() => {
+    return docArr.value.filter((item: Doctor) => {
+        return item.workTime == 1;
+    });
+});
 </script>
 
 <style scoped lang="scss">
@@ -212,6 +257,12 @@ const fetchWorkData = async () => {
                         background-color: #ccc;
                         color: #7f7f7f;
                     }
+                }
+
+                &.cur {
+                    transform: scale(1.1);
+                    transition: all 0.5s ;
+                    margin: 0 10px;
                 }
 
                 .upper {
