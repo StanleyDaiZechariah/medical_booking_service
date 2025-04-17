@@ -115,7 +115,7 @@
                         <!-- 右侧区域展示挂号的钱数 -->
                         <div class="right">
                             <div class="money">￥{{ doc.amount }}</div>
-                            <el-button type="primary" size="default">{{ doc.availableNumber }}</el-button>
+                            <el-button type="primary" size="default" @click="goStep2(doc)">{{ doc.availableNumber }}</el-button>
                         </div>
                     </div>
                 </div>

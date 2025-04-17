@@ -13,7 +13,7 @@
 
             <!-- 卡片的主体要展示就诊人的具体信息 -->
             <div class="user">
-                <Visitor v-for="item in 4" :key="item" class="item" />
+                <Visitor v-for="user in userArr" :key="user.id" class="item" :user="user" />
             </div>
         </el-card>
         <!-- 展示医生的信息 -->
@@ -109,6 +109,32 @@
 import { Edit } from '@element-plus/icons-vue';
 // 展示就诊人的组件
 import Visitor from './Visitor.vue';
+// 引入获取就诊人信息接口
+import { repGetUser } from '@/api/hospital/hospital';
+// 引入vueAPI
+import { onMounted, ref } from 'vue';
+// 引入用户的数据类型
+import type { UserResponseData, UserArr } from '@/api/hospital/types';
+
+
+// 存储就诊人的信息
+let userArr = ref<UserArr>([]);
+
+
+
+// 组件挂载完毕就获取用户的就诊人信息
+onMounted(() => {
+    fetchUserData();
+});
+// 获取就诊人的信息的函数
+const fetchUserData = async () => {
+    // 
+    let res: UserResponseData = await repGetUser();
+    console.log(res);
+    if (res.code == 200) {
+        userArr.value = res.data;
+    }
+}
 
 </script>
 

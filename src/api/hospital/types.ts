@@ -147,3 +147,46 @@ export type DocArr = Doctor[];
 export interface DoctorResponseData extends ResponseData {
     data: DocArr
 }
+
+
+// 用户数据的ts类型
+export interface User {
+    "id": number,
+    "createTime": string,
+    "updateTime": string,
+    "isDeleted": number,
+    "param": {
+        "certificatesTypeString": string,
+        "contactsCertificatesTypeString": string,
+        "cityString": null,
+        "fullAddress": string,
+        "districtString": null,
+        "provinceString": null
+    },
+    "userId": number,
+    "name": string,
+    "certificatesType": string,
+    "certificatesNo": string,
+    "sex": number,
+    "birthdate": string,
+    "phone": string,
+    "isMarry": number,
+    "provinceCode": null,
+    "cityCode": null,
+    "districtCode": null,
+    "address": string,
+    "contactsName": string,
+    "contactsCertificatesType": string,
+    "contactsCertificatesNo": string,
+    "contactsPhone": string,
+    "isInsure": number,
+    "cardNo": null,
+    "status": string
+}
+
+export type UserArr = User[];
+
+// 用户列表接口的返回数据类型
+export interface UserResponseData extends ResponseData {
+    data: UserArr
+}

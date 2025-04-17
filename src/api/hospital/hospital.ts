@@ -1,6 +1,6 @@
 // 引入二次封装的axios实例
 import request from '@/utils/request';
-import type { DepartmentResponseData, HospitalDetailResponseData, LoginData, UserLoginResponseData, HospitalWorkData, DoctorResponseData } from './types';
+import type { DepartmentResponseData, HospitalDetailResponseData, LoginData, UserLoginResponseData, HospitalWorkData, DoctorResponseData, UserResponseData } from './types';
 
 // 定义接口地址
 enum API {
@@ -15,7 +15,9 @@ enum API {
     // 某某医院某一个科室预约挂号的数据
     HOSPITAL_WORK_URL = 'hosp/hospital/auth/getBookingScheduleRule/',
     // 获取医院某一个科室某一天的挂号数据
-    HOSPITAL_DOCTOR_URL = '/hosp/hospital/auth/findScheduleList/'
+    HOSPITAL_DOCTOR_URL = '/hosp/hospital/auth/findScheduleList/',
+    // 获取某一个账号下就诊人的信息
+    GET_USER_URL = '/user/patient/auth/findAll'
 }
 
 // 获取医院详情的接口
@@ -47,3 +49,8 @@ export const repHospitalWork = (page: number, limit: number, hoscode: string, de
 export const repHospitalDoctor = (hoscode: string, depcode: string, workDate: string) => {
     return request.get<any, DoctorResponseData>(API.HOSPITAL_DOCTOR_URL + `${hoscode}/${depcode}/${workDate}`);
 }
+
+// 获取某个账号的用户数据
+export const repGetUser = () => {
+    return request.get<any, UserResponseData>(API.GET_USER_URL);
+} 
