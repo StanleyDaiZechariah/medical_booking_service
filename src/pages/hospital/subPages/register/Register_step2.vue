@@ -13,7 +13,7 @@
 
             <!-- 卡片的主体要展示就诊人的具体信息 -->
             <div class="user">
-                <Visitor v-for="user in userArr" :key="user.id" class="item" :user="user" />
+                <Visitor @click="changeIndex(index)" v-for="(user, index) in userArr" :key="user.id" class="item" :user="user" :index="index" :currentIndex="currentIndex"/>
             </div>
         </el-card>
         <!-- 展示医生的信息 -->
@@ -99,7 +99,7 @@
 
         <!-- 确定挂号按钮 -->
         <div class="btn">
-            <el-button type="primary" size="default">确定挂号</el-button>
+            <el-button type="primary" size="default" :disabled="currentIndex == -1 ? true : false">确定挂号</el-button>
         </div>
     </div>
 </template>
@@ -125,6 +125,8 @@ let userArr = ref<UserArr>([]);
 let $route = useRoute();
 // 存储医生的信息
 let doctorInfo = ref<Doctor>({} as Doctor);
+// 存储用户确定就诊人的信息的索引值
+let currentIndex = ref<number>(-1);
 
 
 // 组件挂载完毕就获取用户的就诊人信息
@@ -151,6 +153,12 @@ const fetchDocInfo = async (schedule: string) => {
         doctorInfo.value = res.data;
     }
 }
+// 点击就诊人子组件的回调
+const changeIndex = (index: number) => {
+    // 存储当前用户选择的就诊人的信息索引值
+    currentIndex.value = index;
+
+}
 
 </script>
 
@@ -164,6 +172,7 @@ const fetchDocInfo = async (schedule: string) => {
 
     .box-card {
         margin: 20px 0;
+        cursor: pointer;
 
         .card-header {
             display: flex;

@@ -179,7 +179,7 @@ const getDoctorWorkData = async () => {
     // 科室的编号
     let depcode = $route.query.depcode as string;
     // 时间 （这里我写死了）
-    let workDate = "2024-11-17";
+    let workDate = "2024-11-15";
     let res:DoctorResponseData =  await repHospitalDoctor(hoscode, depcode, workDate);
     console.log(res);
     if (res.code == 200) {

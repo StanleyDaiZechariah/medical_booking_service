@@ -20,6 +20,11 @@
             <p>婚姻状况：{{ user.isMarry == 1 ? '已婚' : '未婚' }}</p>
             <p>当前住址：{{ user.address }}</p>
             <p>详细地址：{{ user.param.fullAddress }}</p>
+
+            <!-- 红色的已经选择的盒子 -->
+            <transition name="confirm">
+                <div class="confirm" v-if="currentIndex === index">已选择</div>
+            </transition>
         </div>
     </div>
 </template>
@@ -29,13 +34,14 @@
 import { Edit } from '@element-plus/icons-vue';
 
 // 从父组件那里拿来的数据
-defineProps(['user']);
+defineProps(['user', 'index', 'currentIndex']);
 
 </script>
 
 <style scoped lang="scss">
 .vistor {
     box-shadow: 0px 0px 12px rgb(0, 0, 0, 0.12);
+
     .top {
         height: 60px;
         background-color: #e5e5e5;
@@ -62,9 +68,39 @@ defineProps(['user']);
 
     .bottom {
         padding: 20px;
+        position: relative;
 
         p {
             line-height: 30px;
+        }
+
+        .confirm {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            color: red;
+            border-radius: 50%;
+            border: 1px dashed red;
+            text-align: center;
+            line-height: 200px;
+            font-weight: bold;
+            left: 20%;
+            top: 20%;
+            opacity: 0.5;
+            transform: rotate(45deg);
+        }
+
+        .confirm-enter-from {
+            transform: scale(1);
+        }
+
+        .confirm-enter-active {
+            transition: all 0.3s;
+            transform: scale(1.2);
+        }
+
+        .confirm-enter-to {
+            transform: scale(1);
         }
     }
 }
