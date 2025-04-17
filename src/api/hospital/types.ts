@@ -190,3 +190,8 @@ export type UserArr = User[];
 export interface UserResponseData extends ResponseData {
     data: UserArr
 }
+
+// 获取某一个挂号医生数据详情
+export interface DoctorInfoData extends ResponseData {
+    data: Doctor
+}

@@ -27,8 +27,6 @@
 <script setup lang='ts'>
 // 引入element-plus图标组件
 import { Edit } from '@element-plus/icons-vue';
-// 引入vueAPI
-import { defineProps } from 'vue';
 
 // 从父组件那里拿来的数据
 defineProps(['user']);

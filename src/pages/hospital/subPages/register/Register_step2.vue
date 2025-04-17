@@ -32,7 +32,7 @@
                             就诊日期：
                         </div>
                     </template>
-                    2023年6月3日
+                    {{ doctorInfo?.workDate }}
                 </el-descriptions-item>
 
                 <!-- 第二个描述项：就诊医院 -->
@@ -42,7 +42,7 @@
                             就诊医院：
                         </div>
                     </template>
-                    北京市第一人民医院
+                    {{ doctorInfo.param?.hosname }}
                 </el-descriptions-item>
 
                 <!-- 第三个描述项：就诊科室 -->
@@ -52,7 +52,7 @@
                             就诊科室：
                         </div>
                     </template>
-                    心胸外科
+                    {{ doctorInfo.param?.depname }}
                 </el-descriptions-item>
 
                 <!-- 第四个描述项：医生姓名 -->
@@ -62,7 +62,7 @@
                             医生姓名：
                         </div>
                     </template>
-                    张三
+                    {{ doctorInfo?.docname }}
                 </el-descriptions-item>
 
                 <!-- 第五个描述项：医生职称-->
@@ -72,7 +72,7 @@
                             医生职称：
                         </div>
                     </template>
-                    副主任医师
+                    {{ doctorInfo?.title }}
                 </el-descriptions-item>
 
                 <!-- 第六个描述项：医生专长 -->
@@ -82,7 +82,7 @@
                             医生专长：
                         </div>
                     </template>
-                    内分泌与代谢性疾病
+                    {{ doctorInfo?.skill }}
                 </el-descriptions-item>
 
                 <!-- 第七个描述项：医事服务费 -->
@@ -92,7 +92,7 @@
                             医事服务费：
                         </div>
                     </template>
-                    100
+                    {{ doctorInfo?.amount }}
                 </el-descriptions-item>
             </el-descriptions>
         </el-card>
@@ -110,21 +110,29 @@ import { Edit } from '@element-plus/icons-vue';
 // 展示就诊人的组件
 import Visitor from './Visitor.vue';
 // 引入获取就诊人信息接口
-import { repGetUser } from '@/api/hospital/hospital';
+import { repGetUser, repDoctorInfo } from '@/api/hospital/hospital';
 // 引入vueAPI
 import { onMounted, ref } from 'vue';
 // 引入用户的数据类型
-import type { UserResponseData, UserArr } from '@/api/hospital/types';
+import type { UserResponseData, UserArr, DoctorInfoData, Doctor } from '@/api/hospital/types';
+// 获取路由对象
+import { useRoute } from 'vue-router';
 
 
 // 存储就诊人的信息
 let userArr = ref<UserArr>([]);
-
+// 获取路由对象
+let $route = useRoute();
+// 存储医生的信息
+let doctorInfo = ref<Doctor>({} as Doctor);
 
 
 // 组件挂载完毕就获取用户的就诊人信息
 onMounted(() => {
+    // 获取就诊人信息
     fetchUserData();
+    // 获取某个具体医生的信息
+    fetchDocInfo($route.query.docId as string);
 });
 // 获取就诊人的信息的函数
 const fetchUserData = async () => {
@@ -133,6 +141,14 @@ const fetchUserData = async () => {
     console.log(res);
     if (res.code == 200) {
         userArr.value = res.data;
+    }
+}
+// 获取某个具体医生的信息的函数
+const fetchDocInfo = async (schedule: string) => {
+    let res: DoctorInfoData = await repDoctorInfo(schedule);
+    console.log(res);
+    if (res.code == 200) {
+        doctorInfo.value = res.data;
     }
 }
 
