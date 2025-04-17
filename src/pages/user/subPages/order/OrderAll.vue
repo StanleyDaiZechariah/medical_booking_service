@@ -1,10 +1,10 @@
 <template>
     <div>
-        挂号订单
+        全部订单
     </div>
 </template>
 
-<script setup lang='ts' name="Order">
+<script setup lang='ts'>
 
 </script>
 

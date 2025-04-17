@@ -58,7 +58,7 @@ export default createRouter({
                 },
                 {
                     path: 'order',
-                    component: () => import('@/pages/user/subPages/Order.vue'),
+                    component: () => import('@/pages/user/subPages/order/Order.vue'),
                 },
                 {
                     path: 'profile',
@@ -70,7 +70,7 @@ export default createRouter({
                 },
                 {
                     path: 'feedback',
-                    component: () => import('@/pages/user/subPages/FeedBack.vue'),
+                    component: () => import('@/pages/user/subPages/Feedback.vue'),
                 }
             ]
         }
