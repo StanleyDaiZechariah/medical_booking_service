@@ -8,6 +8,8 @@ enum API {
     SUBMIT_ORDER_URL = '/order/orderInfo/auth/submitOrder/',
     // 获取订单详情的数据
     GET_ORDER_INFO_URL = '/order/orderInfo/auth/getOrderInfo/',
+    // 取消订单的接口
+    ORDER_CANCER_URL = '/order/orderInfo/auth/cancelOrder/'
 }
 
 
@@ -19,4 +21,9 @@ export const repSubmitOrder = (hoscode: string, scheduleId: string, patientId: n
 // 获取订单详情的数据
 export const repOrderInfo = (orderId: string) => {
     return request.get<any, OrderResponseData>(API.GET_ORDER_INFO_URL + orderId)
+}
+
+// 取消订单的接口
+export const repCancelOrder = (orderId: string) => {
+    return request.get<any, any>(API.ORDER_CANCER_URL + orderId);
 }

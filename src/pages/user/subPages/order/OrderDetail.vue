@@ -52,7 +52,7 @@
                                 就诊日期
                             </div>
                         </template>
-                        {{ orderInfo.reserveDate  }}
+                        {{ orderInfo.reserveDate }}
                     </el-descriptions-item>
 
                     <!-- 就诊医院 -->
@@ -92,7 +92,7 @@
                                 医事服务费
                             </div>
                         </template>
-                        {{ orderInfo.amount }}
+                        <div style="color: red;">{{ orderInfo.amount }}元</div>
                     </el-descriptions-item>
 
                     <!-- 挂号单号 -->
@@ -116,15 +116,20 @@
                     </el-descriptions-item>
                 </el-descriptions>
 
-                <div class="btn">
-                    <el-button >取消預約</el-button>
-                    <el-button type="primary">支付</el-button>
+                <div class="btn" v-if="orderInfo.orderStatus == 0 || orderInfo.orderStatus == 1">
+                    <el-popconfirm title="你确定要取消预约吗？" @confirm="cancel">
+                        <template #reference>
+                            <el-button>取消預約</el-button>
+                        </template>
+                    </el-popconfirm>
+                    
+                    <el-button type="primary" v-if="orderInfo.orderStatus == 0">支付</el-button>
                 </div>
             </div>
 
             <!-- 右侧注意事项 -->
             <div class="right">
-                <el-card >
+                <el-card>
                     <template #header>
                         <div class="card-header">
                             <span>注意事项</span>
@@ -145,7 +150,7 @@
 // 引入vue 组合式api
 import { ref, onMounted } from 'vue'
 // 引入请求订单数据的接口
-import { repOrderInfo } from '@/api/user/user';
+import { repOrderInfo, repCancelOrder } from '@/api/user/user';
 // 引入路由
 import { useRoute } from 'vue-router'
 // 引入返回数据的ts类型
@@ -165,7 +170,7 @@ onMounted(() => {
 const getOrderInfo = async () => {
     // 调用接口获取数据
     let res: OrderResponseData = await repOrderInfo($route.query.orderId as string);
-    // console.log(res);
+    console.log(res);
     if (res.code === 200) {
         // 如果请求成功就将数据赋值给orderInfo
         orderInfo.value = res.data;
@@ -176,6 +181,20 @@ const getOrderInfo = async () => {
             type: 'error',
             duration: 2000
         });
+    }
+}
+// 取消订单的方法, 订单状态有三种：-1 取消预约， 0 预约未支付， 1 预约支付成功
+const cancel = async () => {
+    try {
+        // 取消预约成功
+        await repCancelOrder($route.query.orderId as string);
+        // 再次获取订单详情的数据
+        getOrderInfo();
+    } catch (e) {
+        ElMessage({
+            type:'error',
+            message: '取消预约失败，请稍后重试！'
+        })
     }
 }
 
@@ -231,7 +250,7 @@ const getOrderInfo = async () => {
             flex: 3;
 
             .btn {
-                margin: 10px ;
+                margin: 10px;
             }
         }
 
