@@ -16,7 +16,7 @@
                             d="M392.533333 806.4L85.333333 503.466667l59.733334-59.733334 247.466666 247.466667L866.133333 213.333333l59.733334 59.733334L392.533333 806.4z"
                             fill="#ffffff" p-id="3271"></path>
                     </svg>
-                    <span>预约成功，待支付</span>
+                    <span>{{ orderInfo.param?.orderStatusString }}</span>
                 </div>
             </el-tag>
 
@@ -42,7 +42,7 @@
                                 就诊人信息
                             </div>
                         </template>
-                        xxxxx
+                        {{ orderInfo?.patientName }}
                     </el-descriptions-item>
 
                     <!-- 就诊日期 -->
@@ -52,7 +52,7 @@
                                 就诊日期
                             </div>
                         </template>
-                        xxxxx
+                        {{ orderInfo.reserveDate  }}
                     </el-descriptions-item>
 
                     <!-- 就诊医院 -->
@@ -62,7 +62,7 @@
                                 就诊医院
                             </div>
                         </template>
-                        xxxx
+                        {{ orderInfo.hosname }}
                     </el-descriptions-item>
 
                     <!-- 就诊科室 -->
@@ -72,7 +72,7 @@
                                 就诊科室
                             </div>
                         </template>
-                        zzzz
+                        {{ orderInfo.depname }}
                     </el-descriptions-item>
 
                     <!-- 医生职称 -->
@@ -82,7 +82,7 @@
                                 医生职称
                             </div>
                         </template>
-                        xxxx
+                        {{ orderInfo.title }}
                     </el-descriptions-item>
 
                     <!-- 医事服务费 -->
@@ -92,7 +92,7 @@
                                 医事服务费
                             </div>
                         </template>
-                        xxxx
+                        {{ orderInfo.amount }}
                     </el-descriptions-item>
 
                     <!-- 挂号单号 -->
@@ -102,7 +102,7 @@
                                 挂号单号
                             </div>
                         </template>
-                        xxxx
+                        {{ orderInfo.outTradeNo }}
                     </el-descriptions-item>
 
                     <!-- 挂号时间 -->
@@ -112,7 +112,7 @@
                                 挂号时间
                             </div>
                         </template>
-                        xxxxx
+                        {{ orderInfo.createTime }}
                     </el-descriptions-item>
                 </el-descriptions>
 
@@ -131,8 +131,8 @@
                         </div>
                     </template>
                     <p>1、请确认就诊人信息是否准确，若填写错误将无法取号就诊，损失由本人承担；</p>
-                    <p style="color: red;">2、【取号】就诊当天需在2023-06-10 09:00前在医院取号，未取号视为爽约，该号不退不换；</p>
-                    <p>3、【退号】在2023-06-09 15:30前可在线退号，逾期将不可办理退号退费；</p>
+                    <p style="color: red;">2、【取号】就诊当天需在{{ orderInfo.fetchTime }}前在医院取号，未取号视为爽约，该号不退不换；</p>
+                    <p>3、【退号】在{{ orderInfo.quitTime }}前可在线退号，逾期将不可办理退号退费；</p>
                     <p>4、北京114预约挂号支持自费患者使用身份证预约，同时支持北京市医保患者使用北京市社保卡在平台预约挂号。请于就诊当日，携带预约挂号所使用的有效身份证件到院取号；</p>
                     <p>5、请注意北京市医保患者在住院期间不能使用社保卡在门诊取号。</p>
                 </el-card>
@@ -142,7 +142,42 @@
 </template>
 
 <script setup lang="ts" name="OrderDetail">
+// 引入vue 组合式api
+import { ref, onMounted } from 'vue'
+// 引入请求订单数据的接口
+import { repOrderInfo } from '@/api/user/user';
+// 引入路由
+import { useRoute } from 'vue-router'
+// 引入返回数据的ts类型
+import type { OrderInfo, OrderResponseData } from '@/api/user/type';
+import { ElMessage } from 'element-plus';
 
+// 路由实例对象
+let $route = useRoute();
+// 存储订单详情数据的变量
+let orderInfo = ref<OrderInfo>({} as OrderInfo);
+
+// 当组件完毕就获取订单数据
+onMounted(() => {
+    getOrderInfo();
+});
+// 获取订单详情的数据
+const getOrderInfo = async () => {
+    // 调用接口获取数据
+    let res: OrderResponseData = await repOrderInfo($route.query.orderId as string);
+    // console.log(res);
+    if (res.code === 200) {
+        // 如果请求成功就将数据赋值给orderInfo
+        orderInfo.value = res.data;
+    } else {
+        // 如果请求失败就提示错误信息
+        ElMessage({
+            message: res.message,
+            type: 'error',
+            duration: 2000
+        });
+    }
+}
 
 </script>
 
